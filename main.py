@@ -110,7 +110,13 @@ async def on_message(message):
     if message.channel.id == 1360963446165995530:
         target_channel = client.get_channel(1302143379387187233)
         if target_channel:
-            await target_channel.send(f" {message.author}: {message.content}")
+            # Forward text content
+            if message.content:
+                await target_channel.send(f" {message.author}: {message.content}")
+            # Forward attachments (images, videos, etc.)
+            if message.attachments:
+                for attachment in message.attachments:
+                    await target_channel.send(f"{message.author} sent an attachment:", file=await attachment.to_file())
 
     # Check if the bot is mentioned
     if client.user.mentioned_in(message):
